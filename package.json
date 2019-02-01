@@ -1,0 +1,40 @@
+{
+  "name": "@jam3/detect",
+  "version": "1.0.0",
+  "description": "React runtime library to detect extra properties passed to components.",
+  "main": "./src/index.js",
+  "keywords": [
+    "detect",
+    "os",
+    "browser",
+    "in-app-browser",
+    "bots"
+  ],
+  "scripts": {
+    "test": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jam3/detect.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jam3/detect/issues"
+  },
+  "homepage": "https://github.com/Jam3/detect#readme",
+  "dependencies": {
+    "bowser": "^2.0.0-beta.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
+    "jest": "^24.0.0"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.js",
+      "!**/node_modules/**"
+    ]
+  }
+}
