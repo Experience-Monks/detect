@@ -12,7 +12,7 @@ describe('Device detector tests', () => {
       devicePixelRatio
     }
 
-    expect(device.getDevicePixelRatio()).toBe(devicePixelRatio);
+    expect(device.getPixelRatio()).toBe(devicePixelRatio);
   });
 
   // TODO: Test getOrientation

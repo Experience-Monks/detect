@@ -1,6 +1,6 @@
 'use strict';
 
-import { detector, os } from '../src';
+import { os } from '../src';
 
 describe('OS detector tests', () => {
 

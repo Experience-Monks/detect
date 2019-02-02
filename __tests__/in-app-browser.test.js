@@ -1,6 +1,6 @@
 'use strict';
 
-import { detector, inAppBrowser } from '../src';
+import { inAppBrowser } from '../src';
 
 describe('In App Browser detector tests', () => {
 
