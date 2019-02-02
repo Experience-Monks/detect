@@ -5,11 +5,13 @@ import os from './detector/os';
 import device from './detector/device';
 import inAppBrowser from './detector/in-app-browser';
 
-export {
+export default {
   bots,
   browser,
   os,
   device,
   inAppBrowser,
   detector
-}
+};
+
+export { bots, browser, os, device, inAppBrowser, detector };
