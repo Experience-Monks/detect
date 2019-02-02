@@ -1,36 +1,63 @@
 import detector from './detector';
 
-function Browser() {
-  this.isChrome = detector.base.chrome === true;
-  this.isFirefox = detector.base.firefox === true;
-  this.isSafari = detector.base.safari === true;
-  this.isEdge = detector.base.msedge === true;
-  this.isIE = detector.base.msie === true;
-  this.isOpera = detector.base.opera === true;
+/**
+ * Contains methods and utils to test everything related to the user's browser
+ *
+ * @class Browser
+ */
+class Browser {
+  constructor() {
+    this._parsedBrowserName = detector.base.getBrowserName();
 
-  this.getBrowserName = function () {
-    if (this.isChrome) return 'chrome';
-    if (this.isFirefox) return 'firefox';
-    if (this.isSafari) return 'safari';
+    this.isChrome = this._parsedBrowserName === 'Chrome';
+    this.isFirefox = this._parsedBrowserName === 'Firefox';
+    this.isSafari = this._parsedBrowserName === 'Safari';
+    this.isEdge = this._parsedBrowserName === 'Microsoft Edge';
+    this.isIE = this._parsedBrowserName === 'Internet Explorer';
+    this.isOpera = this._parsedBrowserName === 'Opera';
+  }
+
+  /**
+   * Returns the browser's name
+   *
+   * @returns {String} 'chrome', 'ie', 'firefox', 'safari', 'edge', 'opera', etc
+   * @memberof Browser
+   */
+  getName() {
     if (this.isEdge) return 'edge';
     if (this.isIE) return 'ie';
-    if (this.isOpera) return 'opera';
-    return '';
+    return this._parsedBrowserName.toLowerCase();
   }
 
-  this.getBrowserVersion = function () {
-    return detector.base.version;
+  /**
+   * Returns the browser's version
+   *
+   * @returns {Number} 11.0.1
+   * @memberof Browser
+   */
+  getVersion() {
+    return detector.base.getBrowserVersion();
   }
 
-  this.getBrowserMajorVersion = function () {
-    return parseInt(detector.base.version, 10);
+  /**
+   * Returns the browser's major version
+   *
+   * @returns {Number} 43
+   * @memberof Browser
+   */
+  getMajorVersion() {
+    return parseInt(this.getBrowserVersion(), 10);
   }
 
-  this.getVendor = function () {
+  /**
+   * Returns the browser's vendor
+   *
+   * @returns {String} Google Inc
+   * @memberof Browser
+   */
+  getVendor() {
     return detector.window.navigator.vendor ? detector.window.navigator.vendor.toLowerCase() : '';
   }
 }
 
 export default new Browser();
-
-

@@ -1,35 +1,55 @@
-import detector from "./detector";
+import detector from './detector';
 
-function OS() {
-  this.isiOS = detector.base.ios === true;
-  this.isAndroid = detector.base.android === true;
-  this.isFirefoxOS = detector.base.firefoxos === true;
-  this.isWindowsPhone = detector.base.windowsphone === true;
-  this.isBlackberry = detector.base.blackberry === true;
-  this.isMac = detector.base.mac === true;
-  this.isWindows = detector.base.windows === true;
-  this.isLinux = detector.base.linux === true;
-  this.isChromeOS = detector.base.chromeos === true;
+/**
+ * Contains methods and utils to test user's Operative System
+ *
+ * @class OS
+ */
+class OS {
+  constructor() {
+    this._parsedOSName = detector.base.getOSName();
 
-  this.getOSName = function () {
-    if (this.isiOS) return 'ios';
-    if (this.isAndroid) return 'android';
-    if (this.isFirefoxOS) return 'firefoxos';
-    if (this.isWindowsPhone) return 'windowsphone';
-    if (this.isBlackberry) return 'blackberry';
-    if (this.isMac) return 'mac';
-    if (this.isWindows) return 'windows';
-    if (this.isLinux) return 'linux';
-    if (this.isChromeOS) return 'chromeos';
-    return '';
+    this.isiOS = this._parsedOSName === 'iOS';
+    this.isAndroid = this._parsedOSName === 'Android';
+    this.isWindowsPhone = this._parsedOSName === 'Windows Phone';
+    this.isBlackberry = this._parsedOSName === 'BlackBerry';
+    this.isMac = this._parsedOSName === 'macOS';
+    this.isWindows = this._parsedOSName === 'Windows';
+    this.isLinux = this._parsedOSName === 'Linux';
+    this.isChromeOS = this._parsedOSName === 'Chrome OS';
   }
 
-  this.getOSVersion = function () {
-    return detector.base.osversion;
+  /**
+   * Returns the Operative System name
+   *
+   * @returns {String} 'ios', 'android', 'windowsphone', 'blackberry', 'macos', 'chromeos', 'windows', etc
+   * @memberof OS
+   */
+  getName() {
+    return this._parsedOSName
+      .split(' ')
+      .join('')
+      .toLowerCase();
   }
 
-  this.getOSMajorVersion = function () {
-    return parseInt(detector.base.osversion, 10);
+  /**
+   * Returns the Operative System version
+   *
+   * @returns {Number} 13.2.1
+   * @memberof OS
+   */
+  getVersion() {
+    return detector.base.getOSVersion();
+  }
+
+  /**
+   * Returns the Operative System major version
+   *
+   * @returns {Number} 13
+   * @memberof OS
+   */
+  getMajorVersion() {
+    return parseInt(detector.base.getOSVersion(), 10);
   }
 }
 

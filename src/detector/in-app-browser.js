@@ -2,15 +2,27 @@ import os from './os';
 import browser from './browser';
 import detector from './detector';
 
-function InAppBrowser() {
-  this.isFacebook = /fban|fbav/.test(detector.ua);
-  this.isTwitter = /twitter/.test(detector.ua);
-  this.isInstagram = /instagram/.test(detector.ua);
-  this.isPinterest = /pinterest/.test(detector.ua);
+/**
+ * Contains methods and utils to test browsers embedded in mobile applications
+ *
+ * @class InAppBrowser
+ */
+class InAppBrowser {
+  constructor() {
+    this.isFacebook = /fban|fbav/.test(detector.ua);
+    this.isTwitter = /twitter/.test(detector.ua);
+    this.isInstagram = /instagram/.test(detector.ua);
+    this.isPinterest = /pinterest/.test(detector.ua);
+  }
 
-  this.isInAppBrowser = function () {
+  /**
+   * Is the browser embedded in an application
+   *
+   * @returns {Boolean} True | False
+   * @memberof InAppBrowser
+   */
+  isInAppBrowser() {
     let isInAppBrowser = this.isFacebook || this.isTwitter || this.isInstagram || this.isPinterest;
-
     if (!isInAppBrowser) {
       isInAppBrowser =
         os.isiOS &&
@@ -18,11 +30,16 @@ function InAppBrowser() {
         browser.isSafari &&
         typeof detector.window.navigator.mediaDevices === 'undefined';
     }
-
     return isInAppBrowser;
   }
 
-  this.getInAppBrowserVersion = function () {
+  /**
+   * Returns in-app browser's version
+   *
+   * @returns {Number} 45
+   * @memberof InAppBrowser
+   */
+  getVersion() {
     if (os.isiOS) return os.getOSMajorVersion();
     if (os.isAndroid) return browser.getBrowserMajorVersion();
     return 9999;
