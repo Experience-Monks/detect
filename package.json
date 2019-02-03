@@ -1,8 +1,9 @@
 {
   "name": "@jam3/detect",
   "version": "1.0.0",
-  "description": "React runtime library to detect extra properties passed to components.",
-  "main": "./src/index.js",
+  "description": "User agent feature detection like Device Orientation, in App Browser Detection, etc",
+  "main": "dist/index.js",
+  "module": "dist/index.module.js",
   "keywords": [
     "detect",
     "os",
