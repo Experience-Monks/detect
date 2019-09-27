@@ -294,7 +294,7 @@ class InAppBrowser {
     let isInAppBrowser = this.isFacebook || this.isTwitter || this.isInstagram || this.isPinterest;
 
     if (!isInAppBrowser) {
-      isInAppBrowser = os.isiOS && os.getOSMajorVersion() >= 11 && browser.isSafari && typeof detector.window.navigator.mediaDevices === 'undefined';
+      isInAppBrowser = os.isiOS && os.getMajorVersion() >= 11 && browser.isSafari && typeof detector.window.navigator.mediaDevices === 'undefined';
     }
 
     return isInAppBrowser;
@@ -308,8 +308,8 @@ class InAppBrowser {
 
 
   getVersion() {
-    if (os.isiOS) return os.getOSMajorVersion();
-    if (os.isAndroid) return browser.getBrowserMajorVersion();
+    if (os.isiOS) return os.getMajorVersion();
+    if (os.isAndroid) return browser.getMajorVersion();
     return 9999;
   }
 
