@@ -1,6 +1,6 @@
 'use strict';
 
-import { detector, browser } from '../src';
+import { detector, browser, refresh } from '../src';
 
 describe('Browser detector tests', () => {
 
@@ -14,6 +14,8 @@ describe('Browser detector tests', () => {
       }
     }
 
-    expect(browser.getVendor()).toBe(vendorName.toLocaleLowerCase());
+    refresh();
+
+    expect(browser.vendor).toBe(vendorName.toLocaleLowerCase());
   });
 });

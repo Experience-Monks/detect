@@ -15,7 +15,7 @@ npm install @jam3/detect
 
 ```
 import detect from '@jam3/detect';
-import {bots, browser} from '@jam3/detect';
+import { os, browser, device } from '@jam3/detect';
 ```
 
 ## Usage
@@ -23,20 +23,16 @@ import {bots, browser} from '@jam3/detect';
 1. Know the OS Major Version
 
 ```
-import {os} from '@jam3/detect';
+import { os } from '@jam3/detect';
 
-console.log(os.getOSMajorVersion());
+console.log(os.majorVersion);
 ```
 
 2. Get device orientation
 
 ```
-import {device} from '@jam3/detect';
+import { device } from '@jam3/detect';
 
-console.log(device.isPortrait());
-console.log(device.isLandscape());
+console.log(device.portrait);
+console.log(device.landscape);
 ```
-
-
-## TODO
-1. Unify API, there are some boolean and methods called `is[noun]`, we should have a clear convention between methods and variables.

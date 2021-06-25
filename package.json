@@ -1,15 +1,14 @@
 {
   "name": "@jam3/detect",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "User agent feature detection like Device Orientation, in App Browser Detection, etc",
   "main": "dist/index.js",
   "module": "dist/index.module.js",
   "keywords": [
     "detect",
     "os",
-    "browser",
-    "in-app-browser",
-    "bots"
+    "device",
+    "browser"
   ],
   "scripts": {
     "test": "jest --watch",

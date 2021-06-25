@@ -1,6 +1,6 @@
 'use strict';
 
-import { detector, device } from '../src';
+import { detector, device, refresh } from '../src';
 
 describe('Device detector tests', () => {
 
@@ -8,11 +8,11 @@ describe('Device detector tests', () => {
 
     const devicePixelRatio = 2;
 
-    detector.window = {
-      devicePixelRatio
-    }
+    detector.window.devicePixelRatio = devicePixelRatio;
 
-    expect(device.getPixelRatio()).toBe(devicePixelRatio);
+    refresh();
+
+    expect(device.pixelRatio).toBe(devicePixelRatio);
   });
 
   // TODO: Test getOrientation

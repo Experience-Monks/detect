@@ -2,6 +2,21 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
 var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
 function unwrapExports (x) {
@@ -19,317 +34,159 @@ var es5 = createCommonjsModule(function (module, exports) {
 var bowser = unwrapExports(es5);
 var es5_1 = es5.bowser;
 
-let _window = window;
-
-let _ua = window.navigator.userAgent.toLowerCase();
-
-const _browser = bowser.getParser(window.navigator.userAgent);
-
-var detector = {
-  base: _browser,
-  window: _window,
-  ua: _ua
+const detector = typeof window !== 'undefined' ? {
+  ua: window.navigator.userAgent.toLowerCase(),
+  base: bowser.getParser(window.navigator.userAgent),
+  window: window,
+  // https://stackoverflow.com/questions/58019463/how-to-detect-device-name-in-safari-on-ios-13-while-it-doesnt-show-the-correct
+  isSpoofedIpad: (/iPad/.test(navigator.platform) || navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) && !window.MSStream
+} : {
+  ua: '',
+  base: {
+    getOSName: () => 'node',
+    getOSVersion: () => 1,
+    getBrowserName: () => 'node',
+    getBrowserVersion: () => 1,
+    getPlatform: () => ({
+      type: 'node',
+      vendor: 'node'
+    })
+  },
+  window: {
+    innerWidth: 1440,
+    innerHeight: 900,
+    navigator: {
+      vendor: 'node'
+    }
+  },
+  isSpoofedIpad: false
 };
-
-const SUPPORTED_BOTS = ['facebookexternalhit', 'linkedinbot', 'google (+https://developers.google.com/+/web/snippet/)', 'facebot', 'https://developers.google.com/+/web/snippet/', 'twitterbot', 'tumblr', 'googlebot'];
-/**
- * Is the browser a bot
- *
- * @param {Array<string>} supportedBots Custom array of bots, ['googlebot', 'linkedinbot']
- * @returns {Boolean} True | False
- */
-
-function isBot(supportedBots) {
-  if (!supportedBots) supportedBots = SUPPORTED_BOTS;
-  return Boolean(supportedBots.filter(bot => detector.ua.indexOf(bot.toLowerCase()) !== -1).length);
-}
-
-var bots = {
-  isBot
-};
-
-/**
- * Contains methods and utils to test everything related to the user's browser
- *
- * @class Browser
- */
-
-class Browser {
-  constructor() {
-    this._parsedBrowserName = detector.base.getBrowserName();
-    this.isChrome = this._parsedBrowserName === 'Chrome';
-    this.isFirefox = this._parsedBrowserName === 'Firefox';
-    this.isSafari = this._parsedBrowserName === 'Safari';
-    this.isEdge = this._parsedBrowserName === 'Microsoft Edge';
-    this.isIE = this._parsedBrowserName === 'Internet Explorer';
-    this.isOpera = this._parsedBrowserName === 'Opera';
-  }
-  /**
-   * Returns the browser's name
-   *
-   * @returns {String} 'chrome', 'ie', 'firefox', 'safari', 'edge', 'opera', etc
-   * @memberof Browser
-   */
-
-
-  getName() {
-    if (this.isEdge) return 'edge';
-    if (this.isIE) return 'ie';
-    return this._parsedBrowserName.toLowerCase();
-  }
-  /**
-   * Returns the browser's version
-   *
-   * @returns {Number} 11.0.1
-   * @memberof Browser
-   */
-
-
-  getVersion() {
-    return detector.base.getBrowserVersion();
-  }
-  /**
-   * Returns the browser's major version
-   *
-   * @returns {Number} 43
-   * @memberof Browser
-   */
-
-
-  getMajorVersion() {
-    return parseInt(this.getBrowserVersion(), 10);
-  }
-  /**
-   * Returns the browser's vendor
-   *
-   * @returns {String} Google Inc
-   * @memberof Browser
-   */
-
-
-  getVendor() {
-    return detector.window.navigator.vendor ? detector.window.navigator.vendor.toLowerCase() : '';
-  }
-
-}
-
-var browser = new Browser();
-
-/**
- * Contains methods and utils to test user's Operative System
- *
- * @class OS
- */
 
 class OS {
   constructor() {
-    this._parsedOSName = detector.base.getOSName();
-    this.isiOS = this._parsedOSName === 'iOS';
-    this.isAndroid = this._parsedOSName === 'Android';
-    this.isWindowsPhone = this._parsedOSName === 'Windows Phone';
-    this.isBlackberry = this._parsedOSName === 'BlackBerry';
-    this.isMac = this._parsedOSName === 'macOS';
-    this.isWindows = this._parsedOSName === 'Windows';
-    this.isLinux = this._parsedOSName === 'Linux';
-    this.isChromeOS = this._parsedOSName === 'Chrome OS';
+    _defineProperty(this, "supportedBots", ['facebookexternalhit', 'linkedinbot', 'google (+https://developers.google.com/+/web/snippet/)', 'facebot', 'https://developers.google.com/+/web/snippet/', 'twitterbot', 'tumblr', 'googlebot']);
+
+    this.name = detector.isSpoofedIpad ? 'ios' : detector.base.getOSName().toLowerCase();
+    this.ios = this.name === 'ios';
+    this.android = this.name === 'android';
+    this.windowsPhone = this.name === 'windows phone';
+    this.blackBerry = this.name === 'blackberry';
+    this.mac = this.name === 'macos';
+    this.windows = this.name === 'windows';
+    this.linux = this.name === 'linux';
+    this.chromeos = this.name === 'chrome os';
+    this.node = this.name === 'node';
   }
-  /**
-   * Returns the Operative System name
-   *
-   * @returns {String} 'ios', 'android', 'windowsphone', 'blackberry', 'macos', 'chromeos', 'windows', etc
-   * @memberof OS
-   */
 
-
-  getName() {
-    return this._parsedOSName.split(' ').join('').toLowerCase();
+  get bot() {
+    return Boolean(this.supportedBots.filter(bot => detector.ua.indexOf(bot.toLowerCase()) !== -1).length);
   }
-  /**
-   * Returns the Operative System version
-   *
-   * @returns {Number} 13.2.1
-   * @memberof OS
-   */
 
-
-  getVersion() {
-    return detector.base.getOSVersion();
+  get version() {
+    return detector.base.getOSVersion() || 0;
   }
-  /**
-   * Returns the Operative System major version
-   *
-   * @returns {Number} 13
-   * @memberof OS
-   */
 
-
-  getMajorVersion() {
-    return parseInt(detector.base.getOSVersion(), 10);
+  get majorVersion() {
+    return parseInt(this.version, 10);
   }
 
 }
 
-var os = new OS();
+exports.os = new OS();
 
-const PORTRAIT = 'portrait';
-const LANDSCAPE = 'landscape';
-/**
- * Contains methods and utils to test everything related to the user's device
- *
- * @class Device
- */
+class Browser {
+  constructor() {
+    this.name = detector.base.getBrowserName().toLowerCase();
+    this.vendor = detector.window.navigator.vendor ? detector.window.navigator.vendor.toLowerCase() : '';
+    this.chrome = this.name === 'chrome';
+    this.firefox = this.name === 'firefox';
+    this.safari = this.name === 'safari';
+    this.edge = this.name === 'microsoft edge';
+    this.ie = this.name === 'internet explorer';
+    this.opera = this.name === 'opera';
+    this.node = this.name === 'node';
+    this.facebook = /fban|fbav/i.test(detector.ua);
+    this.twitter = /twitter/i.test(detector.ua);
+    this.instagram = /instagram/i.test(detector.ua);
+    this.pinterest = /pinterest/i.test(detector.ua);
+    this.weChat = /wechat|micromessenger/i.test(detector.ua);
+    this.tikTok = /musical_ly/i.test(detector.ua);
+    this.inApp = this.facebook || this.twitter || this.instagram || this.pinterest || this.weChat || this.tikTok || exports.os.ios && exports.os.majorVersion >= 11 && this.safari && typeof detector.window.navigator.mediaDevices === 'undefined';
+  }
+
+  get version() {
+    return detector.base.getOSVersion() || 0;
+  }
+
+}
+
+exports.browser = new Browser();
 
 class Device {
   constructor() {
-    const platform = detector.base.getPlatform();
-    if (!platform['type']) platform['type'] = '';
-    if (!platform['model']) platform['model'] = '';
-    this.isPhone = platform.type == 'mobile';
-    this.isTablet = platform.type == 'tablet';
-    this.isMobile = this.isPhone || this.isTablet;
-    this.isDesktop = !this.isMobile;
-    this.isiPhone = platform.model === 'iPhone';
-    this.isiPad = platform.model === 'iPad';
-    this.isiPod = platform.model === 'iPod';
+    this.platform = detector.isSpoofedIpad ? {
+      type: 'tablet',
+      vendor: 'Apple',
+      model: 'iPad'
+    } : detector.base.getPlatform();
+    this.type = (this.platform.type || '').toLowerCase();
+    this.model = (this.platform.model || '').toLowerCase();
+    this.phone = this.type === 'mobile';
+    this.tablet = this.type === 'tablet';
+    this.mobile = this.phone || this.tablet;
+    this.desktop = !this.mobile;
+    this.iphone = this.model === 'iphone';
+    this.ipad = this.model === 'ipad';
+    this.ipod = this.model === 'ipod';
+    this.pixelRatio = detector.window.devicePixelRatio;
+    this.node = this.type === 'node';
+    this.browser = !this.node;
   }
-  /**
-   * Returns the device's type
-   *
-   * @returns {String} 'phone', 'desktop' or 'tablet'
-   * @memberof Device
-   */
 
-
-  getType() {
-    if (this.isPhone) return 'phone';
-    if (this.isTablet) return 'tablet';
-    if (this.isDesktop) return 'desktop';
-    return '';
-  }
-  /**
-   * Returns device's pixel ratio
-   *
-   * @returns {Number} 2
-   * @memberof Device
-   */
-
-
-  getPixelRatio() {
-    return detector.window.devicePixelRatio;
-  }
-  /**
-   * Returns device's current orientation
-   *
-   * @returns {String} 'portrait' or 'landscape'
-   * @memberof Device
-   */
-
-
-  getOrientation() {
-    if (typeof window.screen === 'object') {
-      const orientationType = window.screen.msOrientation || (window.screen.orientation || window.screen.mozOrientation || {}).type;
+  get orientation() {
+    if (typeof detector.window.screen === 'object') {
+      const orientationType = detector.window.screen.msOrientation || (detector.window.screen.orientation || detector.window.screen.mozOrientation || {}).type;
 
       if (typeof orientationType === 'string') {
         return orientationType.split('-', 1)[0];
       }
     }
 
-    if (typeof window.matchMedia === 'function') {
-      return window.matchMedia('(orientation: portrait)').matches === true ? PORTRAIT : LANDSCAPE;
+    if (typeof detector.window.matchMedia === 'function') {
+      return detector.window.matchMedia('(orientation: portrait)').matches === true ? 'PORTRAIT' : 'LANDSCAPE';
     }
 
-    const w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    const h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-    return w < h ? PORTRAIT : LANDSCAPE;
+    const w = Math.max(document.documentElement.clientWidth, detector.window.innerWidth || 0);
+    const h = Math.max(document.documentElement.clientHeight, detector.window.innerHeight || 0);
+    return w < h ? 'PORTRAIT' : 'LANDSCAPE';
   }
-  /**
-   * Is portrait the current device's orientation
-   *
-   * @returns {Boolean} True | False
-   * @memberof Device
-   */
 
-
-  isPortrait() {
-    return this.getOrientation() === PORTRAIT;
+  get portrait() {
+    return this.orientation === 'PORTRAIT';
   }
-  /**
-   * Is landscape the current device's orientation
-   *
-   * @returns {Boolean} True | False
-   * @memberof Device
-   */
 
-
-  isLandscape() {
-    return this.getOrientation() === LANDSCAPE;
+  get landscape() {
+    return this.orientation === 'LANDSCAPE';
   }
 
 }
 
-var device = new Device();
-
-/**
- * Contains methods and utils to test browsers embedded in mobile applications
- *
- * @class InAppBrowser
- */
-
-class InAppBrowser {
-  constructor() {
-    this.isFacebook = /fban|fbav/.test(detector.ua);
-    this.isTwitter = /twitter/.test(detector.ua);
-    this.isInstagram = /instagram/.test(detector.ua);
-    this.isPinterest = /pinterest/.test(detector.ua);
-  }
-  /**
-   * Is the browser embedded in an application
-   *
-   * @returns {Boolean} True | False
-   * @memberof InAppBrowser
-   */
-
-
-  isInAppBrowser() {
-    let isInAppBrowser = this.isFacebook || this.isTwitter || this.isInstagram || this.isPinterest;
-
-    if (!isInAppBrowser) {
-      isInAppBrowser = os.isiOS && os.getMajorVersion() >= 11 && browser.isSafari && typeof detector.window.navigator.mediaDevices === 'undefined';
-    }
-
-    return isInAppBrowser;
-  }
-  /**
-   * Returns in-app browser's version
-   *
-   * @returns {Number} 45
-   * @memberof InAppBrowser
-   */
-
-
-  getVersion() {
-    if (os.isiOS) return os.getMajorVersion();
-    if (os.isAndroid) return browser.getMajorVersion();
-    return 9999;
-  }
-
-}
-
-var inAppBrowser = new InAppBrowser();
-
-var index = {
-  bots,
-  browser,
-  os,
-  device,
-  inAppBrowser,
+exports.device = new Device();
+const detect = {
+  os: exports.os,
+  browser: exports.browser,
+  device: exports.device,
   detector
 };
+function refresh() {
+  exports.browser = new Browser();
+  exports.device = new Device();
+  exports.os = new OS();
+  detect.browser = exports.browser;
+  detect.device = exports.device;
+  detect.os = exports.os;
+}
 
-exports.default = index;
-exports.bots = bots;
-exports.browser = browser;
-exports.os = os;
-exports.device = device;
-exports.inAppBrowser = inAppBrowser;
 exports.detector = detector;
+exports.refresh = refresh;
+exports.default = detect;

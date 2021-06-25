@@ -1,6 +1,6 @@
 'use strict';
 
-import { detector, bots } from '../src';
+import { detector, os, refresh } from '../src';
 
 describe('Bots detector tests', () => {
 
@@ -8,39 +8,47 @@ describe('Bots detector tests', () => {
 
     detector.ua = 'facebookexternalhit';
 
-    expect(bots.isBot()).toBeTruthy();
+    refresh();
+
+    expect(os.bot).toBeTruthy();
   });
 
   test('Test bots against a not valid bot', () => {
 
     detector.ua = 'example';
 
-    expect(bots.isBot()).toBeFalsy();
+    refresh();
+
+    expect(os.bot).toBeFalsy();
   });
 
   test('Test bots sending a new list of bots', () => {
 
     detector.ua = 'donso';
 
-    const supportedBots = [
+    refresh();
+
+    os.supportedBots = [
       'table',
       'donso',
       'truck'
     ]
 
-    expect(bots.isBot(supportedBots)).toBeTruthy();
+    expect(os.bot).toBeTruthy();
   });
 
   test('Test bots sending a new list of bots and user agent is invalid', () => {
 
     detector.ua = 'another';
 
-    const supportedBots = [
+    refresh();
+
+    os.supportedBots = [
       'table',
       'donso',
       'truck'
     ]
 
-    expect(bots.isBot(supportedBots)).toBeFalsy();
+    expect(os.bot).toBeFalsy();
   });
 });

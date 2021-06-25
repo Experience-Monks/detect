@@ -1,11 +1,11 @@
 'use strict';
 
-import { inAppBrowser } from '../src';
+import { browser } from '../src';
 
 describe('In App Browser detector tests', () => {
 
   test('Test facebook in app browser', () => {
-    expect(inAppBrowser.isFacebook).toBeFalsy();
+    expect(browser.facebook).toBeFalsy();
   });
 
   // TODO: Test getOrientation
