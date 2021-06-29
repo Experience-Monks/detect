@@ -60,7 +60,7 @@ const detector = typeof window !== 'undefined' ? {
 
 class OS {
   constructor() {
-    _defineProperty(this, "supportedBots", ['facebookexternalhit', 'linkedinbot', 'google (+https://developers.google.com/+/web/snippet/)', 'facebot', 'https://developers.google.com/+/web/snippet/', 'twitterbot', 'tumblr', 'googlebot']);
+    _defineProperty(this, "supportedBots", ['facebookexternalhit', 'skypeuripreview', 'baiduspider', 'linkedinbot', 'ia_archiver', 'duckduckbot', 'twitterbot', 'googlebot', 'yandexbot', 'bingbot', 'facebot', 'tumblr', 'slurp', 'google (+https://developers.google.com/+/web/snippet/)', 'https://developers.google.com/+/web/snippet/']);
 
     this.name = detector.isSpoofedIpad ? 'ios' : detector.base.getOSName().toLowerCase();
     this.ios = this.name === 'ios';
@@ -83,7 +83,7 @@ class OS {
   }
 
   get majorVersion() {
-    return parseInt(this.version, 10);
+    return parseInt(this.version.replace(/[^0-9.]/g, ''), 10);
   }
 
 }
@@ -92,7 +92,8 @@ let os = new OS();
 
 class Browser {
   constructor() {
-    this.name = detector.base.getBrowserName().toLowerCase();
+    this.name = detector.ua.includes('edg/') // https://github.com/lancedikson/bowser/issues/416
+    ? 'microsoft edge' : detector.base.getBrowserName().toLowerCase();
     this.vendor = detector.window.navigator.vendor ? detector.window.navigator.vendor.toLowerCase() : '';
     this.chrome = this.name === 'chrome';
     this.firefox = this.name === 'firefox';
@@ -101,17 +102,24 @@ class Browser {
     this.ie = this.name === 'internet explorer';
     this.opera = this.name === 'opera';
     this.node = this.name === 'node';
-    this.facebook = /fban|fbav/i.test(detector.ua);
-    this.twitter = /twitter/i.test(detector.ua);
     this.instagram = /instagram/i.test(detector.ua);
     this.pinterest = /pinterest/i.test(detector.ua);
+    this.facebook = /fban|fbav/i.test(detector.ua);
+    this.linkedIn = /linkedin/i.test(detector.ua);
+    this.snapchat = /snapchat/i.test(detector.ua);
+    this.whatsApp = /whatsapp/i.test(detector.ua);
+    this.twitter = /twitter/i.test(detector.ua);
     this.weChat = /wechat|micromessenger/i.test(detector.ua);
     this.tikTok = /musical_ly/i.test(detector.ua);
-    this.inApp = this.facebook || this.twitter || this.instagram || this.pinterest || this.weChat || this.tikTok || os.ios && os.majorVersion >= 11 && this.safari && typeof detector.window.navigator.mediaDevices === 'undefined';
+    this.inApp = this.instagram || this.pinterest || this.facebook || this.linkedIn || this.snapchat || this.whatsApp || this.twitter || this.weChat || this.tikTok || os.ios && os.majorVersion >= 11 && this.safari && typeof detector.window.navigator.mediaDevices === 'undefined';
   }
 
   get version() {
-    return detector.base.getOSVersion() || 0;
+    return detector.base.getBrowserVersion() || 0;
+  }
+
+  get majorVersion() {
+    return parseInt(this.version.replace(/[^0-9.]/g, ''), 10);
   }
 
 }
@@ -174,14 +182,6 @@ const detect = {
   device,
   detector
 };
-function refresh() {
-  browser = new Browser();
-  device = new Device();
-  os = new OS();
-  detect.browser = browser;
-  detect.device = device;
-  detect.os = os;
-}
 
 export default detect;
-export { detector, os, browser, device, refresh };
+export { detector, os, browser, device };

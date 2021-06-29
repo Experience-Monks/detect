@@ -70,7 +70,7 @@ class OS {
     return parseInt(this.version.replace(/[^0-9.]/g, ''), 10);
   }
 }
-export let os = new OS();
+export const os = new OS();
 
 class Browser {
   constructor() {
@@ -113,7 +113,7 @@ class Browser {
     return parseInt(this.version.replace(/[^0-9.]/g, ''), 10);
   }
 }
-export let browser = new Browser();
+export const browser = new Browser();
 
 class Device {
   constructor() {
@@ -156,7 +156,7 @@ class Device {
     return this.orientation === 'LANDSCAPE';
   }
 }
-export let device = new Device();
+export const device = new Device();
 
 const detect = { os, browser, device, detector };
 
