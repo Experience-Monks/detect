@@ -1,6 +1,6 @@
 import bowser from 'bowser';
 
-export const detector =
+const detector =
   typeof window !== 'undefined'
     ? {
         ua: window.navigator.userAgent.toLowerCase(),
@@ -15,22 +15,37 @@ export const detector =
         ua: '',
         base: {
           getOSName: () => 'node',
-          getOSVersion: () => 1,
+          getOSVersion: () => '1',
           getBrowserName: () => 'node',
-          getBrowserVersion: () => 1,
+          getBrowserVersion: () => '1',
           getPlatform: () => ({ type: 'node', vendor: 'node' }),
         },
         window: {
+          devicePixelRatio: 1,
           innerWidth: 1440,
           innerHeight: 900,
           navigator: {
             vendor: 'node',
+            mediaDevices: null as MediaDevices,
           },
+          screen: null as Screen,
+          matchMedia: null as MediaQueryList,
         },
         isSpoofedIpad: false,
       };
 
 class OS {
+  name: string;
+  ios: boolean;
+  android: boolean;
+  windowsPhone: boolean;
+  blackBerry: boolean;
+  mac: boolean;
+  windows: boolean;
+  linux: boolean;
+  chromeos: boolean;
+  node: boolean;
+
   supportedBots = [
     'facebookexternalhit',
     'skypeuripreview',
@@ -64,15 +79,34 @@ class OS {
     return Boolean(this.supportedBots.filter((bot) => detector.ua.indexOf(bot.toLowerCase()) !== -1).length);
   }
   get version() {
-    return detector.base.getOSVersion() || 0;
+    return detector.base.getOSVersion() || '0';
   }
   get majorVersion() {
     return parseInt(this.version.replace(/[^0-9.]/g, ''), 10);
   }
 }
-export const os = new OS();
 
 class Browser {
+  name: string;
+  vendor: string;
+  chrome: boolean;
+  firefox: boolean;
+  safari: boolean;
+  edge: boolean;
+  ie: boolean;
+  opera: boolean;
+  node: boolean;
+  facebook: boolean;
+  linkedIn: boolean;
+  snapchat: boolean;
+  whatsApp: boolean;
+  twitter: boolean;
+  weChat: boolean;
+  tikTok: boolean;
+  instagram: boolean;
+  pinterest: boolean;
+  inApp: boolean;
+
   constructor() {
     this.name = detector.ua.includes('edg/') // https://github.com/lancedikson/bowser/issues/416
       ? 'microsoft edge'
@@ -103,19 +137,31 @@ class Browser {
       this.whatsApp ||
       this.twitter ||
       this.weChat ||
-      this.tikTok ||
-      (os.ios && os.majorVersion >= 11 && this.safari && typeof detector.window.navigator.mediaDevices === 'undefined');
+      this.tikTok;
   }
   get version() {
-    return detector.base.getBrowserVersion() || 0;
+    return detector.base.getBrowserVersion() || '0';
   }
   get majorVersion() {
     return parseInt(this.version.replace(/[^0-9.]/g, ''), 10);
   }
 }
-export const browser = new Browser();
 
 class Device {
+  platform: bowser.Parser.PlatformDetails;
+  type: string;
+  model: string;
+  phone: boolean;
+  tablet: boolean;
+  mobile: boolean;
+  desktop: boolean;
+  iphone: boolean;
+  ipad: boolean;
+  ipod: boolean;
+  pixelRatio: number;
+  node: boolean;
+  browser: boolean;
+
   constructor() {
     this.platform = detector.isSpoofedIpad
       ? { type: 'tablet', vendor: 'Apple', model: 'iPad' }
@@ -134,30 +180,35 @@ class Device {
     this.browser = !this.node;
   }
   get orientation() {
+    if (window.orientation !== undefined) {
+      return Math.abs(+window.orientation) === 90 ? 'landscape' : 'portrait';
+    }
+    if (typeof detector.window.matchMedia === 'function') {
+      return detector.window.matchMedia('(orientation: portrait)').matches === true ? 'portrait' : 'landscape';
+    }
     if (typeof detector.window.screen === 'object') {
-      const orientationType =
-        detector.window.screen.msOrientation ||
-        (detector.window.screen.orientation || detector.window.screen.mozOrientation || {}).type;
+      const orientationType = (detector.window.screen.orientation || {}).type;
       if (typeof orientationType === 'string') {
         return orientationType.split('-', 1)[0];
       }
     }
-    if (typeof detector.window.matchMedia === 'function') {
-      return detector.window.matchMedia('(orientation: portrait)').matches === true ? 'PORTRAIT' : 'LANDSCAPE';
-    }
     const w = Math.max(document.documentElement.clientWidth, detector.window.innerWidth || 0);
     const h = Math.max(document.documentElement.clientHeight, detector.window.innerHeight || 0);
-    return w < h ? 'PORTRAIT' : 'LANDSCAPE';
+    return w < h ? 'portrait' : 'landscape';
   }
   get portrait() {
-    return this.orientation === 'PORTRAIT';
+    return this.orientation === 'portrait';
   }
   get landscape() {
-    return this.orientation === 'LANDSCAPE';
+    return this.orientation === 'landscape';
   }
 }
-export const device = new Device();
 
-const detect = { os, browser, device, detector };
+class Detect {
+  os = new OS();
+  browser = new Browser();
+  device = new Device();
+  detector = detector;
+}
 
-export default detect;
+export default new Detect();
