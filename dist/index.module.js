@@ -86,14 +86,14 @@ var OS = (function () {
 var Browser = (function () {
     function Browser() {
         this.name = detector.ua.includes('edg/')
-            ? 'microsoft edge'
-            : detector.base.getBrowserName().toLowerCase();
+            ? 'microsoft-edge'
+            : detector.base.getBrowserName().toLowerCase().replace(' ', '-');
         this.vendor = detector.window.navigator.vendor ? detector.window.navigator.vendor.toLowerCase() : '';
         this.chrome = this.name === 'chrome';
         this.firefox = this.name === 'firefox';
         this.safari = this.name === 'safari';
-        this.edge = this.name === 'microsoft edge';
-        this.ie = this.name === 'internet explorer';
+        this.edge = this.name === 'microsoft-edge';
+        this.ie = this.name === 'internet-explorer';
         this.opera = this.name === 'opera';
         this.node = this.name === 'node';
         this.instagram = /instagram/i.test(detector.ua);
@@ -149,6 +149,7 @@ var Device = (function () {
         this.pixelRatio = detector.window.devicePixelRatio;
         this.node = this.type === 'node';
         this.browser = !this.node;
+        this.touch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     }
     Object.defineProperty(Device.prototype, "orientation", {
         get: function () {
@@ -192,9 +193,9 @@ var browser = new Browser();
 var device = new Device();
 var Detect = (function () {
     function Detect() {
-        this.os = new OS();
-        this.browser = new Browser();
-        this.device = new Device();
+        this.os = os;
+        this.browser = browser;
+        this.device = device;
         this.detector = detector;
     }
     return Detect;

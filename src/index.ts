@@ -109,14 +109,14 @@ class Browser {
 
   constructor() {
     this.name = detector.ua.includes('edg/') // https://github.com/lancedikson/bowser/issues/416
-      ? 'microsoft edge'
-      : detector.base.getBrowserName().toLowerCase();
+      ? 'microsoft-edge'
+      : detector.base.getBrowserName().toLowerCase().replace(' ', '-');
     this.vendor = detector.window.navigator.vendor ? detector.window.navigator.vendor.toLowerCase() : '';
     this.chrome = this.name === 'chrome';
     this.firefox = this.name === 'firefox';
     this.safari = this.name === 'safari';
-    this.edge = this.name === 'microsoft edge';
-    this.ie = this.name === 'internet explorer';
+    this.edge = this.name === 'microsoft-edge';
+    this.ie = this.name === 'internet-explorer';
     this.opera = this.name === 'opera';
     this.node = this.name === 'node';
     this.instagram = /instagram/i.test(detector.ua);
@@ -161,6 +161,7 @@ class Device {
   pixelRatio: number;
   node: boolean;
   browser: boolean;
+  touch: boolean;
 
   constructor() {
     this.platform = detector.isSpoofedIpad
@@ -178,6 +179,7 @@ class Device {
     this.pixelRatio = detector.window.devicePixelRatio;
     this.node = this.type === 'node';
     this.browser = !this.node;
+    this.touch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   }
   get orientation() {
     if (window.orientation !== undefined) {

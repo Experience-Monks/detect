@@ -84,6 +84,7 @@ declare class Device {
     pixelRatio: number;
     node: boolean;
     browser: boolean;
+    touch: boolean;
     constructor();
     get orientation(): string;
     get portrait(): boolean;
