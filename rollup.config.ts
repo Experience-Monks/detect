@@ -8,7 +8,7 @@ export default [
     output: {
       dir: './dist',
       format: 'cjs',
-      exports: 'default',
+      exports: 'named',
       sourcemap: true,
       entryFileNames: 'index.js',
     },
@@ -28,7 +28,7 @@ export default [
     output: {
       file: 'dist/index.module.js',
       format: 'es',
-      exports: 'default',
+      exports: 'named',
       sourcemap: true,
     },
     plugins: [typescript()],
