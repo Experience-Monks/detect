@@ -149,7 +149,7 @@ var Device = (function () {
         this.pixelRatio = detector.window.devicePixelRatio;
         this.node = this.type === 'node';
         this.browser = !this.node;
-        this.touch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        this.touch = 'ontouchstart' in detector.window || detector.window.navigator.maxTouchPoints > 0;
     }
     Object.defineProperty(Device.prototype, "orientation", {
         get: function () {
