@@ -209,9 +209,9 @@ export const browser = new Browser();
 export const device = new Device();
 
 class Detect {
-  os = new OS();
-  browser = new Browser();
-  device = new Device();
+  os = os;
+  browser = browser;
+  device = device;
   detector = detector;
 }
 
