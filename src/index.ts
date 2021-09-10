@@ -1,6 +1,6 @@
 import bowser from 'bowser';
 
-const detector =
+export const detector =
   typeof window !== 'undefined'
     ? {
         ua: window.navigator.userAgent.toLowerCase(),
@@ -204,10 +204,14 @@ class Device {
   }
 }
 
+export const os = new OS();
+export const browser = new Browser();
+export const device = new Device();
+
 class Detect {
-  os = new OS();
-  browser = new Browser();
-  device = new Device();
+  os = os;
+  browser = browser;
+  device = device;
   detector = detector;
 }
 
