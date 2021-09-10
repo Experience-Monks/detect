@@ -187,6 +187,9 @@ var Device = (function () {
     });
     return Device;
 }());
+var os = new OS();
+var browser = new Browser();
+var device = new Device();
 var Detect = (function () {
     function Detect() {
         this.os = new OS();
@@ -198,5 +201,5 @@ var Detect = (function () {
 }());
 var index = new Detect();
 
-export { index as default };
+export { browser, index as default, detector, device, os };
 //# sourceMappingURL=index.module.js.map

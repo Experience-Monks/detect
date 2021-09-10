@@ -1,6 +1,6 @@
 import bowser from 'bowser';
 
-const detector =
+export const detector =
   typeof window !== 'undefined'
     ? {
         ua: window.navigator.userAgent.toLowerCase(),
@@ -203,6 +203,10 @@ class Device {
     return this.orientation === 'landscape';
   }
 }
+
+export const os = new OS();
+export const browser = new Browser();
+export const device = new Device();
 
 class Detect {
   os = new OS();

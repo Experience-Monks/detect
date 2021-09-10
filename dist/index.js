@@ -1,5 +1,7 @@
 'use strict';
 
+Object.defineProperty(exports, '__esModule', { value: true });
+
 var bowser = require('bowser');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -193,6 +195,9 @@ var Device = (function () {
     });
     return Device;
 }());
+var os = new OS();
+var browser = new Browser();
+var device = new Device();
 var Detect = (function () {
     function Detect() {
         this.os = new OS();
@@ -204,5 +209,9 @@ var Detect = (function () {
 }());
 var index = new Detect();
 
-module.exports = index;
+exports.browser = browser;
+exports['default'] = index;
+exports.detector = detector;
+exports.device = device;
+exports.os = os;
 //# sourceMappingURL=index.js.map

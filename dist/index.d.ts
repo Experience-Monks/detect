@@ -1,4 +1,34 @@
 import bowser from 'bowser';
+export declare const detector: {
+    ua: string;
+    base: bowser.Parser.Parser;
+    window: Window & typeof globalThis;
+    isSpoofedIpad: boolean;
+} | {
+    ua: string;
+    base: {
+        getOSName: () => string;
+        getOSVersion: () => string;
+        getBrowserName: () => string;
+        getBrowserVersion: () => string;
+        getPlatform: () => {
+            type: string;
+            vendor: string;
+        };
+    };
+    window: {
+        devicePixelRatio: number;
+        innerWidth: number;
+        innerHeight: number;
+        navigator: {
+            vendor: string;
+            mediaDevices: MediaDevices;
+        };
+        screen: Screen;
+        matchMedia: MediaQueryList;
+    };
+    isSpoofedIpad: boolean;
+};
 declare class OS {
     name: string;
     ios: boolean;
@@ -59,6 +89,9 @@ declare class Device {
     get portrait(): boolean;
     get landscape(): boolean;
 }
+export declare const os: OS;
+export declare const browser: Browser;
+export declare const device: Device;
 declare class Detect {
     os: OS;
     browser: Browser;
